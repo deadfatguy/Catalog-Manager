@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<workspace>
+	<settings>
+		<label>IMDB</label>
+	</settings>
+	<users>
+		<user>
+			<path>IMDB.jcu</path>
+		</user>
+	</users>
+	<projects>
+		<project>
+			<path>IMDB.jcp</path>
+		</project>
+	</projects>
+</workspace>
