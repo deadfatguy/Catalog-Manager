@@ -18,7 +18,7 @@ public class ImdbTester extends JFrame implements ActionListener
 	JTextField movienamebox;
 	String moviename;
 	JPanel firstPanel;
-	
+	ImdbPageInfo x;
 	
 	public ImdbTester()
 	{
@@ -48,6 +48,7 @@ public class ImdbTester extends JFrame implements ActionListener
 			if(e.getSource().equals(enter)){
 				moviename = movienamebox.getText();
 				test = new ImdbSearch(moviename);
+	      		x = new ImdbPageInfo(test.getURLs());
 	      		
 	      		remove(firstPanel);
 	      		
@@ -66,14 +67,12 @@ public class ImdbTester extends JFrame implements ActionListener
 					ImageIcon image = movieImages.get(i);
 					results.add(new MovieItem(name,1995,"genre",image));
 				}
-				
+				x = new ImdbPageInfo(test.getURLs());
 				int row = 0;
 		      	for(MovieItem movie:results)
 		      	{
-		      		ImdbPageInfo x = new ImdbPageInfo(test.getURLs().get(row));
-		      		JButton b = new JButton(x.movieImage);
+		      		JButton b = new JButton(x.movieImages.get(row));
 					b.addActionListener(this);
-					
 					b.setPreferredSize(new Dimension(182,268));
 					c.weightx = 0.5;
 					c.gridx = 0;
@@ -81,7 +80,7 @@ public class ImdbTester extends JFrame implements ActionListener
 			      	panel.add(b,c);
 			      	
 			      	c.gridx = 1;
-			      	panel.add(new JLabel(x.movieName),c);
+			      	panel.add(new JLabel(x.movieNames.get(row)),c);
 			      	row++;
 		      	}
 		      	JScrollPane jp = new JScrollPane(panel);
@@ -90,16 +89,9 @@ public class ImdbTester extends JFrame implements ActionListener
 		      	setVisible(true);
 			} else {
 				for(int i = 0; i < movieNames.size(); i++){
-					String name = movieNames.get(i);
-					ImageIcon image = movieImages.get(i);
-					
-					 if(((JButton) e.getSource()).getIcon().equals(movieImages.get(i))){
-					 	ImdbPageInfo x = new ImdbPageInfo(test.getURLs().get(i));
-					 	System.out.println ("Name: "+x.movieName);
-					 	System.out.println ("Genre: "+x.movieGenre);
-					 	System.out.println ("Length: "+x.movieLength);
-						System.out.println ("Rating: "+x.movieRating);
-					 }
+					if(((JButton) e.getSource()).getIcon().equals(x.movieImages.get(i))){
+					 	System.out.println (x.getMovie(i));
+					}
 				}
 			}
 		} catch(Exception exc){

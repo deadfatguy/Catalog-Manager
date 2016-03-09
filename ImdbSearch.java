@@ -36,14 +36,9 @@ public class ImdbSearch
 		for(Element name : names){
 			if(i==0){
 				i=1;
-				Pattern p = Pattern.compile("(<img src=\")(.*?)(\">)");
-				Matcher m = p.matcher(name.toString());
-				if(m.find()){
-					imageloc.add(m.group(2));
-				}
 				
-				p = Pattern.compile("(<a href=\")(.*?)(\">)");
-				m = p.matcher(name.toString());
+				Pattern p = Pattern.compile("(<a href=\")(.*?)(\">)");
+				Matcher m = p.matcher(name.toString());
 				if(m.find()){
 					movieURL.add("http://www.imdb.com/"+m.group(2));
 				}
@@ -57,10 +52,10 @@ public class ImdbSearch
 			}
 		}
 		
-		for(String s : imageloc){
-			URL url = new URL(s);
-			ImageIcon imagex = new ImageIcon(ImageIO.read(url));
-			v.add(imagex);
+		ImdbPageInfo x = new ImdbPageInfo(movieURL);
+		
+		for(ImageIcon ic : x.movieImages){
+			v.add(ic);
 		}
 	}
 	

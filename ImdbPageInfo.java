@@ -12,31 +12,48 @@ import org.jsoup.Connection.Response;
 
 public class ImdbPageInfo
 {
-	String movieName;
-	String movieGenre;
-	String movieRating;
-	String movieLength;
-	ImageIcon movieImage;
+	ArrayList<String> movieNames;
+	ArrayList<String> movieGenres;
+	ArrayList<String> movieRatings;
+	ArrayList<ImageIcon> movieImages;
 	
-	public ImdbPageInfo(String url) throws IOException
+	public ImdbPageInfo(ArrayList<String> urls) throws IOException
 	{
-		Document doc = Jsoup.connect(url).get();
-		movieName = doc.select("meta[name=title]").get(0).attr("content");
-		movieGenre = doc.select("span[itemprop=genre]").text();
-		Element rating = doc.select("meta[itemprop=contentRating]").first();
-		if(rating==null){
-			movieRating = "None";
-		} else {
-			movieRating = doc.select("meta[itemprop=contentRating]").get(0).attr("content");
-		}
+		movieNames = new ArrayList<String>();
+		movieGenres = new ArrayList<String>();
+		movieRatings = new ArrayList<String>();
+		movieImages = new ArrayList<ImageIcon>();
 		
-		Element poster = doc.select("img[alt$=Poster]").first();
-		if(poster==null){
+		for(String url: urls){
+			Document doc = Jsoup.connect(url).get();
+			String movieName = doc.select("meta[name=title]").get(0).attr("content");
+			String movieGenre = doc.select("span[itemprop=genre]").text();
+			Element rating = doc.select("meta[itemprop=contentRating]").first();
+			String movieRating = "";
+			if(rating==null){
+				movieRating = "None";
+			} else {
+				movieRating = doc.select("meta[itemprop=contentRating]").get(0).attr("content");
+			}
 			
-		} else {
-			URL urltemp = new URL(doc.select("img[alt$=Poster]").get(0).attr("src"));
-			movieImage = new ImageIcon(ImageIO.read(urltemp));	
+			ImageIcon movieImage = null;
+			Element poster = doc.select("img[alt$=Poster]").first();
+			if(poster==null){
+				//Put in a default image
+			} else {
+				URL urltemp = new URL(doc.select("img[alt$=Poster]").get(0).attr("src"));
+				movieImage = new ImageIcon(ImageIO.read(urltemp));	
+			}
+			
+			movieNames.add(movieName);
+			movieGenres.add(movieGenre);
+			movieRatings.add(movieRating);
+			movieImages.add(movieImage);
 		}
-
+	}
+	
+	public String getMovie(int index)
+	{
+		return "Movie name: "+movieNames.get(index)+"\nMovie genre: "+movieGenres.get(index)+"\nMovie rating: "+movieRatings.get(index);
 	}
 }
