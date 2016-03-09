@@ -1,3 +1,0 @@
-C:\Users\cole1\Projects\Catalog-Manager\ImdbPageInfo.java
-C:\Users\cole1\Projects\Catalog-Manager\ImdbSearch.java
-C:\Users\cole1\Projects\Catalog-Manager\ImdbTester.java

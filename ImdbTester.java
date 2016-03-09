@@ -56,7 +56,6 @@ public class ImdbTester extends JFrame implements ActionListener
 		        movieNames = test.getMovieNames();
 		      	
 		      	JPanel panel = new JPanel();
-		      	//panel.setLayout(new BorderLayout(movieNames.size(),2));
 		      	panel.setLayout(new GridBagLayout());
 		      	GridBagConstraints c = new GridBagConstraints();
 		      	
