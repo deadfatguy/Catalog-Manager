@@ -2,16 +2,16 @@
 
 <workspace>
 	<settings>
-		<label>IMDB</label>
+		<label>Catalog Manager</label>
 	</settings>
 	<users>
 		<user>
-			<path>IMDB.jcu</path>
+			<path>Catalog Manager2.jcu</path>
 		</user>
 	</users>
 	<projects>
 		<project>
-			<path>IMDB.jcp</path>
+			<path>Catalog Manager.jcp</path>
 		</project>
 	</projects>
 </workspace>
