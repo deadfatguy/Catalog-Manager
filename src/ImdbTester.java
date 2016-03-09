@@ -13,12 +13,12 @@ public class ImdbTester extends JFrame implements ActionListener
 {
 	ArrayList<String> movieNames;
 	ArrayList<ImageIcon> movieImages;
-	ImdbSearch test;
+	ImdbSearch imdbSearchResults;
 	JButton enter = new JButton("Enter");
-	JTextField movienamebox;
-	String moviename;
-	JPanel firstPanel;
-	ImdbPageInfo x;
+	JTextField movieNameBox;
+	String movieName;
+	JPanel mainPagePanel;
+	ImdbPageInfo movieInformationResults;
 	
 	public ImdbTester()
 	{
@@ -27,15 +27,15 @@ public class ImdbTester extends JFrame implements ActionListener
 	      	setTitle("ImdbTester");
 	      	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	      	
-	      	movienamebox = new JTextField(20);
+	      	movieNameBox = new JTextField(20);
 			enter.addActionListener(this);
-			moviename = "";
+			movieName = "";
 			
-			firstPanel = new JPanel();
-			firstPanel.add(movienamebox);
-			firstPanel.add(enter);
+			mainPagePanel = new JPanel();
+			mainPagePanel.add(movieNameBox);
+			mainPagePanel.add(enter);
 			
-			add(firstPanel);
+			add(mainPagePanel);
 			
 			setVisible(true);
 		} catch(Exception e){
@@ -46,18 +46,18 @@ public class ImdbTester extends JFrame implements ActionListener
 	public void actionPerformed(ActionEvent e){
 		try{
 			if(e.getSource().equals(enter)){
-				moviename = movienamebox.getText();
-				test = new ImdbSearch(moviename);
-	      		x = new ImdbPageInfo(test.getURLs());
+				movieName = movieNameBox.getText();
+				imdbSearchResults = new ImdbSearch(movieName);
+	      		movieInformationResults = new ImdbPageInfo(imdbSearchResults.getURLs());
 	      		
-	      		remove(firstPanel);
+	      		remove(mainPagePanel);
 	      		
-		        movieImages = test.getImages();
-		        movieNames = test.getMovieNames();
+		        movieImages = imdbSearchResults.getImages();
+		        movieNames = imdbSearchResults.getMovieNames();
 		      	
-		      	JPanel panel = new JPanel();
-		      	panel.setLayout(new GridBagLayout());
-		      	GridBagConstraints c = new GridBagConstraints();
+		      	JPanel searchResultsPanel = new JPanel();
+		      	searchResultsPanel.setLayout(new GridBagLayout());
+		      	GridBagConstraints layoutContraints = new GridBagConstraints();
 		      	
 		      	ArrayList<MovieItem> results = new ArrayList<MovieItem>();
 
@@ -66,35 +66,35 @@ public class ImdbTester extends JFrame implements ActionListener
 					ImageIcon image = movieImages.get(i);
 					results.add(new MovieItem(name,1995,"genre",image));
 				}
-				x = new ImdbPageInfo(test.getURLs());
+				
 				int row = 0;
 		      	for(MovieItem movie:results)
 		      	{
-		      		JButton b = new JButton(x.movieImages.get(row));
-					b.addActionListener(this);
-					b.setPreferredSize(new Dimension(182,268));
-					c.weightx = 0.5;
-					c.gridx = 0;
-					c.gridy = row;
-			      	panel.add(b,c);
+		      		JButton movieResultImageButton = new JButton(movieInformationResults.movieImages.get(row));
+					movieResultImageButton.addActionListener(this);
+					movieResultImageButton.setPreferredSize(new Dimension(182,268));
+					layoutContraints.weightx = 0.5;
+					layoutContraints.gridx = 0;
+					layoutContraints.gridy = row;
+			      	searchResultsPanel.add(movieResultImageButton,layoutContraints);
 			      	
-			      	c.gridx = 1;
-			      	panel.add(new JLabel(x.movieNames.get(row)),c);
+			      	layoutContraints.gridx = 1;
+			      	searchResultsPanel.add(new JLabel(movieInformationResults.movieNames.get(row)),layoutContraints);
 			      	row++;
 		      	}
-		      	JScrollPane jp = new JScrollPane(panel);
-		      	add(jp);
+		      	JScrollPane searchResultsPanelScroll = new JScrollPane(searchResultsPanel);
+		      	add(searchResultsPanelScroll);
 		      	repaint();
 		      	setVisible(true);
 			} else {
 				for(int i = 0; i < movieNames.size(); i++){
-					if(((JButton) e.getSource()).getIcon().equals(x.movieImages.get(i))){
-					 	System.out.println (x.getMovie(i));
+					if(((JButton) e.getSource()).getIcon().equals(movieInformationResults.movieImages.get(i))){
+					 	System.out.println (movieInformationResults.getMovie(i));
 					}
 				}
 			}
-		} catch(Exception exc){
-			exc.printStackTrace();
+		} catch(Exception exception){
+			exception.printStackTrace();
 		}
 	}
 	

@@ -15,10 +15,34 @@
 	</projects>
 	<open_files>
 		<docitem>
-			<path>src\ImdbTester.java</path>
+			<path>src\ImdbPageInfo.java</path>
 			<source>true</source>
 			<index>0</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\ImdbSearch.java</path>
+			<source>true</source>
+			<index>1</index>
 			<active>true</active>
+		</docitem>
+		<docitem>
+			<path>src\ImdbTester.java</path>
+			<source>true</source>
+			<index>2</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\Item.java</path>
+			<source>true</source>
+			<index>3</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\MovieItem.java</path>
+			<source>true</source>
+			<index>4</index>
+			<active>false</active>
 		</docitem>
 	</open_files>
 </workspace_user>

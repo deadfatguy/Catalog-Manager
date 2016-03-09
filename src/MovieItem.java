@@ -1,5 +1,8 @@
 import javax.swing.*;
 
+/**
+ *An item that has a name, year, genre, and image of the main poster.
+ */
 public class MovieItem implements Item
 {
 	private String name;

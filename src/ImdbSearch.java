@@ -13,60 +13,62 @@ import com.google.common.collect.*;
 
 public class ImdbSearch
 {
-	ArrayList<String> k;
-	ArrayList<String> imageloc;
-	ArrayList<ImageIcon> v;
-	Multimap<String, ImageIcon> images;
+	ArrayList<String> movieNames;
+	ArrayList<ImageIcon> movieImages;
 	ArrayList<String> movieURL;
 	
-	public ImdbSearch(String search) throws IOException{
-		imageloc = new ArrayList<String>();
-		k = new ArrayList<String>();
-		v = new ArrayList<ImageIcon>();
-		images = ArrayListMultimap.create();
+	public ImdbSearch(String searchTerm) throws IOException{
+		movieNames = new ArrayList<String>();
+		movieImages = new ArrayList<ImageIcon>();
 		movieURL = new ArrayList<String>();
 		
-		search = search.replaceAll(" ", "+").toLowerCase();
-		System.out.println ("http://www.imdb.com/find?q="+search+"&s=tt&ttype=ft&ref_=fn_ft");
-		Document doc = Jsoup.connect("http://www.imdb.com/find?q="+search+"&s=tt&ttype=ft&ref_=fn_ft").get();
+		//Make the search term usable for the imdb url
+		searchTerm = searchTerm.replaceAll(" ", "+").toLowerCase();
 		
-		Elements names = doc.select("a[href^=/title/");
+		//Create a document based on the imdb search syntax and the users search term
+		Document searchPage = Jsoup.connect("http://www.imdb.com/find?q="+searchTerm+"&s=tt&ttype=ft&ref_=fn_ft").get();
 		
-		int i = 0;
-		for(Element name : names){
-			if(i==0){
-				i=1;
-				
-				Pattern p = Pattern.compile("(<a href=\")(.*?)(\">)");
-				Matcher m = p.matcher(name.toString());
-				if(m.find()){
-					movieURL.add("http://www.imdb.com/"+m.group(2));
+		//Gets all the URLs for the poster image and gets the movie name
+		Elements rawNames = searchPage.select("a[href^=/title/");
+		System.out.println (rawNames.toString());
+		
+		int index = 0;
+		for(Element name : rawNames){
+			if(index==0){
+				index=1;
+				//Parse the movie image URLs
+				Pattern movieURLPattern = Pattern.compile("(<a href=\")(.*?)(\">)");
+				Matcher movieURLResults = movieURLPattern.matcher(name.toString());
+				if(movieURLResults.find()){
+					movieURL.add("http://www.imdb.com/"+movieURLResults.group(2));
 				}
 			}else{
-				i=0;
-				Pattern p = Pattern.compile("(\">)(.*?)(<)");
-				Matcher m = p.matcher(name.toString());
-				if(m.find()){
-					k.add(m.group(2));
+				index=0;
+				//Parse the movie name results
+				Pattern movieNamePattern = Pattern.compile("(\">)(.*?)(<)");
+				Matcher movieNameResults = movieNamePattern.matcher(name.toString());
+				if(movieNameResults.find()){
+					movieNames.add(movieNameResults.group(2));
 				}
 			}
 		}
 		
-		ImdbPageInfo x = new ImdbPageInfo(movieURL);
+		ImdbPageInfo movieInformationResults = new ImdbPageInfo(movieURL);
 		
-		for(ImageIcon ic : x.movieImages){
-			v.add(ic);
+		//Add all the images to movieImages
+		for(ImageIcon movieImage : movieInformationResults.movieImages){
+			movieImages.add(movieImage);
 		}
 	}
 	
 	public ArrayList<ImageIcon> getImages()
 	{
-		return v;
+		return movieImages;
 	}
 	
 	public ArrayList<String> getMovieNames()
 	{
-		return k;
+		return movieNames;
 	}
 	
 	public ArrayList<String> getURLs()

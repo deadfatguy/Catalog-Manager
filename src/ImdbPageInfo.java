@@ -17,31 +17,31 @@ public class ImdbPageInfo
 	ArrayList<String> movieRatings;
 	ArrayList<ImageIcon> movieImages;
 	
-	public ImdbPageInfo(ArrayList<String> urls) throws IOException
+	public ImdbPageInfo(ArrayList<String> moviePageUrls) throws IOException
 	{
 		movieNames = new ArrayList<String>();
 		movieGenres = new ArrayList<String>();
 		movieRatings = new ArrayList<String>();
 		movieImages = new ArrayList<ImageIcon>();
 		
-		for(String url: urls){
-			Document doc = Jsoup.connect(url).get();
-			String movieName = doc.select("meta[name=title]").get(0).attr("content");
-			String movieGenre = doc.select("span[itemprop=genre]").text();
-			Element rating = doc.select("meta[itemprop=contentRating]").first();
+		for(String moviePageUrl: moviePageUrls){
+			Document moviePage = Jsoup.connect(moviePageUrl).get();
+			String movieName = moviePage.select("meta[name=title]").get(0).attr("content");
+			String movieGenre = moviePage.select("span[itemprop=genre]").text();
+			Element rating = moviePage.select("meta[itemprop=contentRating]").first();
 			String movieRating = "";
 			if(rating==null){
 				movieRating = "None";
 			} else {
-				movieRating = doc.select("meta[itemprop=contentRating]").get(0).attr("content");
+				movieRating = moviePage.select("meta[itemprop=contentRating]").get(0).attr("content");
 			}
 			
 			ImageIcon movieImage = null;
-			Element poster = doc.select("img[alt$=Poster]").first();
+			Element poster = moviePage.select("img[alt$=Poster]").first();
 			if(poster==null){
 				//Put in a default image
 			} else {
-				URL urltemp = new URL(doc.select("img[alt$=Poster]").get(0).attr("src"));
+				URL urltemp = new URL(moviePage.select("img[alt$=Poster]").get(0).attr("src"));
 				movieImage = new ImageIcon(ImageIO.read(urltemp));	
 			}
 			
