@@ -36,20 +36,41 @@ public class ImdbPageInfo
 				movieRating = moviePage.select("meta[itemprop=contentRating]").get(0).attr("content");
 			}
 			
-			ImageIcon movieImage = null;
+			//Assigns a generic image as default
+			ImageIcon movieImage = new ImageIcon("generic.jpg");
 			Element poster = moviePage.select("img[alt$=Poster]").first();
-			if(poster==null){
-				//Put in a default image
-			} else {
-				URL urltemp = new URL(moviePage.select("img[alt$=Poster]").get(0).attr("src"));
-				movieImage = new ImageIcon(ImageIO.read(urltemp));	
-			}
 			
+			//Reassigns actual image if found
+			if(poster!=null){
+			URL urltemp = new URL(moviePage.select("img[alt$=Poster]").get(0).attr("src"));
+			movieImage = new ImageIcon(ImageIO.read(urltemp));
+			}
+				
 			movieNames.add(movieName);
 			movieGenres.add(movieGenre);
 			movieRatings.add(movieRating);
 			movieImages.add(movieImage);
 		}
+	}
+	
+	public String getName(int i){
+		return movieNames.get(i);
+	}
+	
+	public int getYear(int i){
+		return 1998;
+	}
+	
+	public String getGenre(int i){
+		return movieGenres.get(i);
+	}
+	
+	public ImageIcon getImage(int i){
+		return movieImages.get(i);
+	}
+	
+	public String getRating(int i){
+		return movieRatings.get(i);
 	}
 	
 	public String getMovie(int index)

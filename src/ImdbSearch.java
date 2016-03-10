@@ -16,6 +16,7 @@ public class ImdbSearch
 	ArrayList<String> movieNames;
 	ArrayList<ImageIcon> movieImages;
 	ArrayList<String> movieURL;
+	ImdbPageInfo movieInformationResults;
 	
 	public ImdbSearch(String searchTerm) throws IOException{
 		movieNames = new ArrayList<String>();
@@ -30,7 +31,6 @@ public class ImdbSearch
 		
 		//Gets all the URLs for the poster image and gets the movie name
 		Elements rawNames = searchPage.select("a[href^=/title/");
-		System.out.println (rawNames.toString());
 		
 		int index = 0;
 		for(Element name : rawNames){
@@ -52,8 +52,8 @@ public class ImdbSearch
 				}
 			}
 		}
-		
-		ImdbPageInfo movieInformationResults = new ImdbPageInfo(movieURL);
+		//Sets instance field rather than setting up a local variable
+		movieInformationResults = new ImdbPageInfo(movieURL);
 		
 		//Add all the images to movieImages
 		for(ImageIcon movieImage : movieInformationResults.movieImages){
@@ -74,5 +74,10 @@ public class ImdbSearch
 	public ArrayList<String> getURLs()
 	{
 		return movieURL;
+	}
+	
+	public ImdbPageInfo getPageInfo()
+	{
+		return movieInformationResults;
 	}
 }

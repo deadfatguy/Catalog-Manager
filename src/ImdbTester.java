@@ -15,6 +15,8 @@ public class ImdbTester extends JFrame implements ActionListener
 	ArrayList<ImageIcon> movieImages;
 	ImdbSearch imdbSearchResults;
 	JButton enter = new JButton("Enter");
+	JButton backToSearch = new JButton("Back to search");
+	JButton openLibrary = new JButton("Open Library");
 	JTextField movieNameBox;
 	String movieName;
 	JPanel mainPagePanel;
@@ -29,11 +31,13 @@ public class ImdbTester extends JFrame implements ActionListener
 	      	
 	      	movieNameBox = new JTextField(20);
 			enter.addActionListener(this);
+			openLibrary.addActionListener(this);
 			movieName = "";
 			
 			mainPagePanel = new JPanel();
 			mainPagePanel.add(movieNameBox);
 			mainPagePanel.add(enter);
+			mainPagePanel.add(openLibrary);
 			
 			add(mainPagePanel);
 			
@@ -48,7 +52,8 @@ public class ImdbTester extends JFrame implements ActionListener
 			if(e.getSource().equals(enter)){
 				movieName = movieNameBox.getText();
 				imdbSearchResults = new ImdbSearch(movieName);
-	      		movieInformationResults = new ImdbPageInfo(imdbSearchResults.getURLs());
+				//Takes the ImdbPageInfo from instance field of ImdbSearch class
+	      		movieInformationResults = imdbSearchResults.getPageInfo();
 	      		
 	      		remove(mainPagePanel);
 	      		
@@ -59,12 +64,22 @@ public class ImdbTester extends JFrame implements ActionListener
 		      	searchResultsPanel.setLayout(new GridBagLayout());
 		      	GridBagConstraints layoutContraints = new GridBagConstraints();
 		      	
+		      	backToSearch.addActionListener(this);
+		      	JPanel main = new JPanel();
+		      	JPanel header = new JPanel();
+				header.add(backToSearch);
+				header.add(openLibrary);
+				main.setLayout(new BoxLayout(main,BoxLayout.Y_AXIS));
+				main.add(header);
+				main.add(searchResultsPanel);
+				
+		      	
 		      	ArrayList<MovieItem> results = new ArrayList<MovieItem>();
 
 				for(int i = 0; i < movieNames.size(); i++){
 					String name = movieNames.get(i);
 					ImageIcon image = movieImages.get(i);
-					results.add(new MovieItem(name,1995,"genre",image));
+					results.add(new MovieItem(name,1995,"genre","rating",image));
 				}
 				
 				int row = 0;
@@ -75,21 +90,31 @@ public class ImdbTester extends JFrame implements ActionListener
 					movieResultImageButton.setPreferredSize(new Dimension(182,268));
 					layoutContraints.weightx = 0.5;
 					layoutContraints.gridx = 0;
-					layoutContraints.gridy = row;
+					layoutContraints.gridy = row+1;
 			      	searchResultsPanel.add(movieResultImageButton,layoutContraints);
 			      	
 			      	layoutContraints.gridx = 1;
 			      	searchResultsPanel.add(new JLabel(movieInformationResults.movieNames.get(row)),layoutContraints);
 			      	row++;
 		      	}
-		      	JScrollPane searchResultsPanelScroll = new JScrollPane(searchResultsPanel);
+		      	JScrollPane searchResultsPanelScroll = new JScrollPane(main);
 		      	add(searchResultsPanelScroll);
 		      	repaint();
 		      	setVisible(true);
-			} else {
+			} else if(e.getSource().equals(backToSearch))
+			{
+				setVisible(false);
+				new ImdbTester();
+			} else if(e.getSource().equals(openLibrary))
+			{
+				System.out.println("The current operation has not been implemented yet!  Stay tuned!");
+			}
+			else {
 				for(int i = 0; i < movieNames.size(); i++){
 					if(((JButton) e.getSource()).getIcon().equals(movieInformationResults.movieImages.get(i))){
-					 	System.out.println (movieInformationResults.getMovie(i));
+					 	MovieItem n = new MovieItem(movieInformationResults.getName(i),movieInformationResults.getYear(i),movieInformationResults.getGenre(i),movieInformationResults.getRating(i),movieInformationResults.getImage(i));
+					 	System.out.println(n.getMovie());
+//					 		movieInformationResults.getMovie(i));
 					}
 				}
 			}

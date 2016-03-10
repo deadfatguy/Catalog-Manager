@@ -8,12 +8,14 @@ public class MovieItem implements Item
 	private String name;
 	private int year;
 	private String genre;
+	private String rating;
 	private ImageIcon image;
 	
-	public MovieItem(String n, int y, String g, ImageIcon i){
+	public MovieItem(String n, int y, String g, String r, ImageIcon i){
 		name = n;
 		year = y;
 		genre = g;
+		rating = r;
 		image = i;
 	}
 	
@@ -31,5 +33,14 @@ public class MovieItem implements Item
 	
 	public ImageIcon getImage(){
 		return image;
+	}
+	
+	public String getRating(){
+		return rating;
+	}
+	
+	public String getMovie()
+	{
+		return "Movie name: "+name+"\nMovie year: "+year+"\nMovie genre: "+genre+"\nMovie rating: "+rating;
 	}
 }
